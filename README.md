@@ -21,6 +21,6 @@ Les debe salir: (venv) C:\Users\alumno\Downloads\TP20242-BACKEND
 Con esto ya estaría instalado, ahora para iniciar el proyecto:
 ### Pasos para iniciar el proyecto
 Una vez instalado, cada vez que quieran iniciar el proyecto, hacen:
-9. Abrir el entorno virtual: venv\Scripts\activate (asegurarse de estar en el directorio del proyecto)
-10. uvicorn src.main:app --reload
-11. Dirigirse en su navegador web a http://localhost:8000/docs
+1. Abrir el entorno virtual: venv\Scripts\activate (asegurarse de estar en el directorio del proyecto)
+2. uvicorn src.main:app --reload
+3. Dirigirse en su navegador web a http://localhost:8000/docs
