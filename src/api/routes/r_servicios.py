@@ -16,7 +16,7 @@ async def r_obtener_servicios(db: Session = Depends(get_db)):
     return array
 
 @gestionar_servicios.post("/post/servicio", response_model=Mensaje, name="Crear un servicio")
-async def r_crear_servicio(entrada: ServicioCreate, db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
+async def r_crear_servicio(entrada: ServicioCreate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_crear_servicio(db, entrada):
         respuesta = Mensaje(
             mensaje="Producto creado exitosamente",

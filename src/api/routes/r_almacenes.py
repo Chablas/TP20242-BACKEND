@@ -15,8 +15,8 @@ async def r_obtener_almacenes(db: Session = Depends(get_db)):
     array = c_obtener_todos_los_almacenes(db)
     return array
 
-@gestionar_almacenes.post("/post/divisa", response_model=Mensaje, name="Crear un almacen")
-async def r_crear_almacen(entrada: AlmacenCreate, db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
+@gestionar_almacenes.post("/post/almacen", response_model=Mensaje, name="Crear un almacen")
+async def r_crear_almacen(entrada: AlmacenCreate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_crear_almacen(db, entrada):
         respuesta = Mensaje(
             mensaje="Almacen creado exitosamente",
