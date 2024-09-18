@@ -7,7 +7,7 @@
 1. Abrir la terminal de git con: Click derecho > Open Git Bash here
 2. Escribir el comando: git clone https://github.com/Chablas/TP20242-BACKEND.git
 3. Ir al drive https://drive.google.com/drive/folders/1xXMBGXzV_kZLHjTShuSSyLhA187Hy_Ks y copiar el contenido de DATABASE_URL.txt
-4. Ir al directorio src/db/conexion.py y pegar el contenido en DATABASE_URL
+4. En el directorio src, crear un archivo .env y pegar el contenido de DATABASE_URL.txt como DATABASE_URL=contenido
 5. En una terminal cualquiera (cmd, git bash o la terminal de vs code), ir al directorio donde clonaste el proyecto con el comando cd. 
 Ejemplo: cd C:\Users\alumno\Downloads\TP20242-BACKEND
 Para cambiar entre discos ssd a hdd o viceversa: d: o c:
