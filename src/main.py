@@ -4,6 +4,7 @@ from src.api.routes.r_almacenes import gestionar_almacenes
 from src.api.routes.r_bienes import gestionar_bienes
 from src.api.routes.r_servicios import gestionar_servicios
 from src.api.routes.r_usuarios import gestionar_usuarios
+from src.api.routes.r_categorias import gestionar_categorias
 from src.api.routes.r_login import login_router
 
 description = """
@@ -35,3 +36,4 @@ app.include_router(gestionar_usuarios, tags=["Gestionar Usuarios"])
 app.include_router(gestionar_almacenes, tags=["Gestionar Almacenes"])
 app.include_router(gestionar_bienes, tags=["Gestionar Bienes"])
 app.include_router(gestionar_servicios, tags=["Gestionar Servicios"])
+app.include_router(gestionar_categorias, tags=["Gestionar Categorías"])
