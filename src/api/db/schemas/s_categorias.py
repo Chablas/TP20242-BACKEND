@@ -15,6 +15,13 @@ class CategoriaCreate(BaseModel):
     class Config:
         orm_mode=True
 
+class CategoriaUpdate(BaseModel):
+    nombre:str
+    descripcion:str
+    imagen:str
+    class Config:
+        orm_mode=True
+
 class CategoriaResponse(BaseModel):
     id: int
     nombre:str

@@ -1,6 +1,6 @@
-from src.api.db.schemas.s_categorias import CategoriaCreate, CategoriaResponse
+from src.api.db.schemas.s_categorias import CategoriaCreate, CategoriaResponse, CategoriaUpdate
 from src.api.db.schemas.s_response import BienMensajeDato, Mensaje
-from src.controllers.c_categorias import c_crear_categoria, c_obtener_todos_las_categorias
+from src.controllers.c_categorias import c_crear_categoria, c_obtener_todos_las_categorias, c_actualizar_categoria
 from src.api.db.sesion import get_db
 from src.auth.auth import get_current_user
 from fastapi import APIRouter
@@ -20,5 +20,13 @@ async def r_crear_categoria(entrada: CategoriaCreate, db: Session = Depends(get_
     if c_crear_categoria(db, entrada):
         respuesta = Mensaje(
             mensaje="Categoria creada exitosamente",
+        )
+        return respuesta
+    
+@gestionar_categorias.put("/put/categoria", response_model=Mensaje, name="Actualizar una categoria")
+async def r_actualizar_categoria(id:str, entrada: CategoriaUpdate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
+    if c_actualizar_categoria(db, id, entrada):
+        respuesta = Mensaje(
+            mensaje="Categoria actualizada exitosamente",
         )
         return respuesta

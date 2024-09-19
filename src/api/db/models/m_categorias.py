@@ -7,6 +7,6 @@ class Categoria(Base):
     id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     nombre = Column(String(50))
     descripcion = Column(String(100))
-    imagen = Column(String(100))
+    imagen = Column(String(1000))
     #created_at = DateTime(default=datetime.datetime.utcnow)
     #updated_at = DateTime(default=datetime.datetime.utcnow)
