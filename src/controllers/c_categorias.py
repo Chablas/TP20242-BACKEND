@@ -51,3 +51,19 @@ def c_actualizar_categoria(db, id:str, entrada:CategoriaUpdate):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
+    
+def c_eliminar_categoria(db, id:str):
+    # Validaciones inicio
+    validacion=db.query(CategoriaModel).filter(CategoriaModel.id==id).first()
+    if validacion is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="La categoría no existe")
+    # Validaciones fin
+    try:
+        categoria = db.query(CategoriaModel).filter(CategoriaModel.id==id).first()
+        db.delete(categoria)
+        db.commit()
+        return True
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
