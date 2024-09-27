@@ -1,6 +1,6 @@
-from src.api.db.schemas.s_almacen import AlmacenCreate, AlmacenResponse
+from src.api.db.schemas.s_almacen import AlmacenCreate, AlmacenResponse, AlmacenUpdate
 from src.api.db.schemas.s_response import AlmacenMensajeDato, Mensaje
-from src.controllers.c_almacenes import c_obtener_todos_los_almacenes, c_crear_almacen
+from src.controllers.c_almacenes import c_obtener_todos_los_almacenes, c_crear_almacen, c_actualizar_almacen, c_eliminar_almacen
 from src.api.db.sesion import get_db
 from src.auth.auth import get_current_user
 from fastapi import APIRouter
@@ -20,5 +20,21 @@ async def r_crear_almacen(entrada: AlmacenCreate, db: Session = Depends(get_db))
     if c_crear_almacen(db, entrada):
         respuesta = Mensaje(
             mensaje="Almacen creado exitosamente",
+        )
+        return respuesta
+    
+@gestionar_almacenes.put("/put/almacen/{id}", response_model=Mensaje, name="Actualizar un almacén")
+async def r_actualizar_almacen(id:str, entrada: AlmacenUpdate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
+    if c_actualizar_almacen(db, id, entrada):
+        respuesta = Mensaje(
+            mensaje="Almacén actualizado exitosamente",
+        )
+        return respuesta
+    
+@gestionar_almacenes.delete("/delete/almacen/{id}", response_model=Mensaje, name="Eliminar un almacén")
+async def r_eliminar_almacen(id:str, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
+    if c_eliminar_almacen(db, id):
+        respuesta = Mensaje(
+            mensaje="Almacén eliminado exitosamente",
         )
         return respuesta

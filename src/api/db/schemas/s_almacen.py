@@ -13,6 +13,12 @@ class AlmacenCreate(BaseModel):
     class Config:
         orm_mode=True
 
+class AlmacenUpdate(BaseModel):
+    nombre:str
+    ubicacion:str
+    class Config:
+        orm_mode=True
+
 class AlmacenResponse(BaseModel):
     id: int
     nombre:str

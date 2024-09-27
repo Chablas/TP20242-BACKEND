@@ -19,6 +19,15 @@ class ProveedorCreate(BaseModel):
     class Config:
         orm_mode=True
 
+class ProveedorUpdate(BaseModel):
+    nombre:str
+    ruc:int
+    direccion:str
+    correo:str
+    telefono:int
+    class Config:
+        orm_mode=True
+
 class ProveedorResponse(BaseModel):
     id: int
     nombre:str
