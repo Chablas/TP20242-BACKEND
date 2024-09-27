@@ -10,6 +10,7 @@ class Producto(Base):
     informacion_general = Column(String(500))
     precio = Column(Float)
     garantia = Column(String(50))
+    imagen = Column(String(1000))
     estado = Column(Boolean)
     #created_at = DateTime(default=datetime.datetime.utcnow)
     #updated_at = DateTime(default=datetime.datetime.utcnow)

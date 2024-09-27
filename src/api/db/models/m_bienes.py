@@ -8,5 +8,6 @@ class Bien(Base):
     marca = Column(String(50))
     especificaciones_tecnicas = Column(String(1000))
     producto_id = Column(Integer)
+    categoria_id = Column(Integer)
     #created_at = DateTime(default=datetime.datetime.utcnow)
     #updated_at = DateTime(default=datetime.datetime.utcnow)
