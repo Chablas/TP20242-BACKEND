@@ -6,7 +6,6 @@ from fastapi import HTTPException, status
 def c_obtener_todos_los_bienes(db):
     try:
         bienes = db.query(BienModel).all()
-        print(bienes[0])
         array_datos = []
         for bien in bienes:
             producto = db.query(ProductoModel).filter(ProductoModel.id==bien.producto_id).first()
@@ -24,7 +23,6 @@ def c_obtener_todos_los_bienes(db):
                 producto_id = bien.producto_id,
                 categoria_id = bien.categoria_id,
             )
-            print(datos)
             array_datos.append(datos)
         return array_datos
     except Exception as e:
@@ -50,7 +48,6 @@ def c_crear_bien(db, entrada:BienCreate):
         db.add(datos)
         db.commit()
         db.refresh(datos)
-        print(datos.id)
         datos = BienModel(
             marca = entrada.marca,
             especificaciones_tecnicas = entrada.especificaciones_tecnicas,
@@ -73,7 +70,7 @@ def c_actualizar_bien(db, id:str, entrada:BienUpdate):
     # Validaciones fin
     try:
         bien = db.query(BienModel).filter(BienModel.id==id).first()
-        producto = db.query(ProductoModel).filter(ProductoModel.id==bien.id).first()
+        producto = db.query(ProductoModel).filter(ProductoModel.id==bien.producto_id).first()
         producto.nombre = entrada.nombre
         producto.informacion_general = entrada.informacion_general
         producto.precio = entrada.precio
@@ -104,7 +101,7 @@ def c_eliminar_bien(db, id:str):
         bien = db.query(BienModel).filter(BienModel.id==id).first()
         db.delete(bien)
         db.commit()
-        producto = db.query(ProductoModel).filter(ProductoModel.id==bien.id).first()
+        producto = db.query(ProductoModel).filter(ProductoModel.id==bien.producto_id).first()
         db.delete(producto)
         db.commit()
         return True

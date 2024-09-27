@@ -16,6 +16,23 @@ class ServicioCreate(BaseModel):
     precio:float
     garantia:str
     estado:bool
+    imagen: str
+
+    condiciones_previas:str
+    servicio_incluye:str
+    servicio_no_incluye:str
+    restricciones:str
+    class Config:
+        orm_mode=True
+
+class ServicioUpdate(BaseModel):
+    nombre:str
+    informacion_general:str
+    precio:float
+    garantia:str
+    estado:bool
+    imagen: str
+
     condiciones_previas:str
     servicio_incluye:str
     servicio_no_incluye:str
@@ -30,6 +47,8 @@ class ServicioResponse(BaseModel):
     precio:float
     garantia:str
     estado:bool
+    imagen: str
+
     condiciones_previas:str
     servicio_incluye:str
     servicio_no_incluye:str
