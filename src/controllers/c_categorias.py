@@ -12,6 +12,14 @@ def c_obtener_todos_las_categorias(db):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
+    
+def c_obtener_categoria_por_id(db, id:str):
+    try:
+        categoria = db.query(CategoriaModel).filter(CategoriaModel.id==id).first()
+        return categoria
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
 
 def c_crear_categoria(db, entrada:CategoriaCreate):
     # Validaciones inicio

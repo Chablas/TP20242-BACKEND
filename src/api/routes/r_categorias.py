@@ -1,6 +1,6 @@
 from src.api.db.schemas.s_categorias import CategoriaCreate, CategoriaResponse, CategoriaUpdate
 from src.api.db.schemas.s_response import BienMensajeDato, Mensaje
-from src.controllers.c_categorias import c_crear_categoria, c_obtener_todos_las_categorias, c_actualizar_categoria, c_eliminar_categoria
+from src.controllers.c_categorias import c_crear_categoria, c_obtener_todos_las_categorias, c_actualizar_categoria, c_eliminar_categoria, c_obtener_categoria_por_id
 from src.api.db.sesion import get_db
 from src.auth.auth import get_current_user
 from fastapi import APIRouter
@@ -14,6 +14,10 @@ gestionar_categorias = APIRouter()
 async def r_obtener_categorias(db: Session = Depends(get_db)):
     array = c_obtener_todos_las_categorias(db)
     return array
+
+@gestionar_categorias.get("/get/categoria/{id}", response_model=CategoriaResponse, name="Obtener una categoria por su id")
+async def r_obtener_categoria_por_id(id:str, db: Session = Depends(get_db)):
+    return c_obtener_categoria_por_id(db, id)
 
 @gestionar_categorias.post("/post/categoria", response_model=Mensaje, name="Crear una categoria")
 async def r_crear_categoria(entrada: CategoriaCreate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
