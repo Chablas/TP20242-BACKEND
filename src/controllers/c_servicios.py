@@ -32,6 +32,26 @@ def c_obtener_todos_los_servicios(db):
 
 def c_crear_servicio(db, entrada:ServicioCreate):
     # Validaciones inicio
+    if entrada.nombre == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo nombre está vacío")
+    if entrada.informacion_general == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo informacion_general está vacío")
+    if entrada.precio == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo precio está vacío")
+    if entrada.garantia == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo garantia está vacío")
+    if entrada.estado == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo estado está vacío")
+    if entrada.imagen == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo imagen está vacío")
+    if entrada.condiciones_previas == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo condiciones_previas está vacío")
+    if entrada.servicio_incluye == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo servicio_incluye está vacío")
+    if entrada.servicio_no_incluye == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo servicio_no_incluye está vacío")
+    if entrada.restricciones == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo restricciones está vacío")
     validacion = db.query(ProductoModel).filter(ProductoModel.nombre==entrada.nombre).first()
     if validacion is not None:
         raise HTTPException(
@@ -65,6 +85,26 @@ def c_crear_servicio(db, entrada:ServicioCreate):
     
 def c_actualizar_servicio(db, id:str, entrada:ServicioUpdate):
     # Validaciones inicio
+    if entrada.nombre == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo nombre está vacío")
+    if entrada.informacion_general == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo informacion_general está vacío")
+    if entrada.precio == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo precio está vacío")
+    if entrada.garantia == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo garantia está vacío")
+    if entrada.estado == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo estado está vacío")
+    if entrada.imagen == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo imagen está vacío")
+    if entrada.condiciones_previas == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo condiciones_previas está vacío")
+    if entrada.servicio_incluye == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo servicio_incluye está vacío")
+    if entrada.servicio_no_incluye == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo servicio_no_incluye está vacío")
+    if entrada.restricciones == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo restricciones está vacío")
     validacion=db.query(ServicioModel).filter(ServicioModel.id==id).first()
     if validacion is None:
         raise HTTPException(

@@ -23,6 +23,12 @@ def c_obtener_categoria_por_id(db, id:str):
 
 def c_crear_categoria(db, entrada:CategoriaCreate):
     # Validaciones inicio
+    if entrada.nombre == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo nombre está vacío")
+    if entrada.descripcion == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo descripcion está vacío")
+    if entrada.imagen == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo imagen está vacío")
     validacion = db.query(CategoriaModel).filter(CategoriaModel.nombre==entrada.nombre).first()
     if validacion is not None:
         raise HTTPException(
@@ -43,6 +49,12 @@ def c_crear_categoria(db, entrada:CategoriaCreate):
     
 def c_actualizar_categoria(db, id:str, entrada:CategoriaUpdate):
     # Validaciones inicio
+    if entrada.nombre == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo nombre está vacío")
+    if entrada.descripcion == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo descripcion está vacío")
+    if entrada.imagen == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo imagen está vacío")
     validacion=db.query(CategoriaModel).filter(CategoriaModel.id==id).first()
     if validacion is None:
         raise HTTPException(
