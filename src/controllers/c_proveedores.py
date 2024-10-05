@@ -61,6 +61,9 @@ def c_actualizar_proveedor(db, id:str, entrada:ProveedorUpdate):
     if validacion is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="El proveedor no existe")
+    if validacion is not None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre del proveedor ya existe")
     # Validaciones fin
     try:
         proveedor = db.query(ProveedorModel).filter(ProveedorModel.id==id).first()

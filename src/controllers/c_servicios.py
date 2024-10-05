@@ -109,6 +109,9 @@ def c_actualizar_servicio(db, id:str, entrada:ServicioUpdate):
     if validacion is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="El servicio no existe")
+    if validacion is not None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre del servicio ya existe")
     # Validaciones fin
     try:
         servicio = db.query(ServicioModel).filter(ServicioModel.id==id).first()

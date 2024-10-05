@@ -59,6 +59,9 @@ def c_actualizar_categoria(db, id:str, entrada:CategoriaUpdate):
     if validacion is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="La categoría no existe")
+    if validacion is not None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre de la categoria ya existe")
     # Validaciones fin
     try:
         categoria = db.query(CategoriaModel).filter(CategoriaModel.id==id).first()
