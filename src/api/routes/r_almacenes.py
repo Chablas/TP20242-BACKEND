@@ -19,7 +19,7 @@ async def r_obtener_almacenes(db: Session = Depends(get_db)):
 async def r_crear_almacen(entrada: AlmacenCreate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_crear_almacen(db, entrada):
         respuesta = Mensaje(
-            mensaje="Almacen creado exitosamente",
+            detail="Almacen creado exitosamente",
         )
         return respuesta
     
@@ -27,7 +27,7 @@ async def r_crear_almacen(entrada: AlmacenCreate, db: Session = Depends(get_db))
 async def r_actualizar_almacen(id:str, entrada: AlmacenUpdate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_actualizar_almacen(db, id, entrada):
         respuesta = Mensaje(
-            mensaje="Almacén actualizado exitosamente",
+            detail="Almacén actualizado exitosamente",
         )
         return respuesta
     
@@ -35,6 +35,6 @@ async def r_actualizar_almacen(id:str, entrada: AlmacenUpdate, db: Session = Dep
 async def r_eliminar_almacen(id:str, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_eliminar_almacen(db, id):
         respuesta = Mensaje(
-            mensaje="Almacén eliminado exitosamente",
+            detail="Almacén eliminado exitosamente",
         )
         return respuesta

@@ -19,7 +19,7 @@ async def r_obtener_bienes(db: Session = Depends(get_db)):
 async def r_crear_bien(entrada: BienCreate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_crear_bien(db, entrada):
         respuesta = Mensaje(
-            mensaje="Bien creado exitosamente",
+            detail="Bien creado exitosamente",
         )
         return respuesta
     
@@ -27,7 +27,7 @@ async def r_crear_bien(entrada: BienCreate, db: Session = Depends(get_db)):#, us
 async def r_actualizar_bien(id:str, entrada: BienUpdate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_actualizar_bien(db, id, entrada):
         respuesta = Mensaje(
-            mensaje="Bien actualizado exitosamente",
+            detail="Bien actualizado exitosamente",
         )
         return respuesta
     
@@ -35,6 +35,6 @@ async def r_actualizar_bien(id:str, entrada: BienUpdate, db: Session = Depends(g
 async def r_eliminar_bien(id:str, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_eliminar_bien(db, id):
         respuesta = Mensaje(
-            mensaje="Bien eliminado exitosamente",
+            detail="Bien eliminado exitosamente",
         )
         return respuesta

@@ -9,32 +9,32 @@ from pydantic import BaseModel
 from typing import List
 
 class Mensaje(BaseModel):
-    mensaje:str
+    detail:str
 
 class AlmacenMensajeDato(BaseModel):
-    mensaje:str
+    detail:str
     dato: AlmacenResponse
 
 class BienMensajeDato(BaseModel):
-    mensaje:str
+    detail:str
     dato: BienResponse
 
 class ProductoAlmacenMensajeDato(BaseModel):
-    mensaje:str
+    detail:str
     dato: ProductoAlmacenResponse
 
 class ProveedorBienMensajeDato(BaseModel):
-    mensaje:str
+    detail:str
     dato: ProveedorBienResponse
 
 class ProveedorMensajeDato(BaseModel):
-    mensaje:str
+    detail:str
     dato: ProveedorResponse
 
 class ServicioMensajeDato(BaseModel):
-    mensaje:str
+    detail:str
     dato: ServicioResponse
 
 class UsuarioMensajeDato(BaseModel):
-    mensaje:str
+    detail:str
     dato: UsuarioResponse

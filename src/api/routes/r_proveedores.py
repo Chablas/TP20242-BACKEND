@@ -19,7 +19,7 @@ async def r_obtener_proveedores(db: Session = Depends(get_db)):
 async def r_crear_proveedor(entrada: ProveedorCreate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_crear_proveedor(db, entrada):
         respuesta = Mensaje(
-            mensaje="Proveedor creado exitosamente",
+            detail="Proveedor creado exitosamente",
         )
         return respuesta
     
@@ -27,7 +27,7 @@ async def r_crear_proveedor(entrada: ProveedorCreate, db: Session = Depends(get_
 async def r_actualizar_proveedor(id:str, entrada: ProveedorUpdate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_actualizar_proveedor(db, id, entrada):
         respuesta = Mensaje(
-            mensaje="Proveedor actualizado exitosamente",
+            detail="Proveedor actualizado exitosamente",
         )
         return respuesta
     
@@ -35,6 +35,6 @@ async def r_actualizar_proveedor(id:str, entrada: ProveedorUpdate, db: Session =
 async def r_eliminar_proveedor(id:str, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_eliminar_proveedor(db, id):
         respuesta = Mensaje(
-            mensaje="Proveedor eliminado exitosamente",
+            detail="Proveedor eliminado exitosamente",
         )
         return respuesta

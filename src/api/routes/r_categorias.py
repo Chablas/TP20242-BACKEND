@@ -23,7 +23,7 @@ async def r_obtener_categoria_por_id(id:str, db: Session = Depends(get_db)):
 async def r_crear_categoria(entrada: CategoriaCreate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_crear_categoria(db, entrada):
         respuesta = Mensaje(
-            mensaje="Categoria creada exitosamente",
+            detail="Categoria creada exitosamente",
         )
         return respuesta
     
@@ -31,7 +31,7 @@ async def r_crear_categoria(entrada: CategoriaCreate, db: Session = Depends(get_
 async def r_actualizar_categoria(id:str, entrada: CategoriaUpdate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_actualizar_categoria(db, id, entrada):
         respuesta = Mensaje(
-            mensaje="Categoria actualizada exitosamente",
+            detail="Categoria actualizada exitosamente",
         )
         return respuesta
     
@@ -39,6 +39,6 @@ async def r_actualizar_categoria(id:str, entrada: CategoriaUpdate, db: Session =
 async def r_eliminar_categoria(id:str, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_eliminar_categoria(db, id):
         respuesta = Mensaje(
-            mensaje="Categoria eliminada exitosamente",
+            detail="Categoria eliminada exitosamente",
         )
         return respuesta

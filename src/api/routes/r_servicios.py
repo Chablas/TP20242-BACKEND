@@ -19,7 +19,7 @@ async def r_obtener_servicios(db: Session = Depends(get_db)):
 async def r_crear_servicio(entrada: ServicioCreate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_crear_servicio(db, entrada):
         respuesta = Mensaje(
-            mensaje="Servicio creado exitosamente",
+            detail="Servicio creado exitosamente",
         )
         return respuesta
     
@@ -27,7 +27,7 @@ async def r_crear_servicio(entrada: ServicioCreate, db: Session = Depends(get_db
 async def r_actualizar_servicio(id:str, entrada: ServicioUpdate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_actualizar_servicio(db, id, entrada):
         respuesta = Mensaje(
-            mensaje="Servicio actualizado exitosamente",
+            detail="Servicio actualizado exitosamente",
         )
         return respuesta
     
@@ -35,6 +35,6 @@ async def r_actualizar_servicio(id:str, entrada: ServicioUpdate, db: Session = D
 async def r_eliminar_servicio(id:str, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_eliminar_servicio(db, id):
         respuesta = Mensaje(
-            mensaje="Servicio eliminado exitosamente",
+            detail="Servicio eliminado exitosamente",
         )
         return respuesta
