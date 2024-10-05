@@ -19,7 +19,7 @@ async def obtener_usuarios(db: Session = Depends(get_db)):
 async def obtener_usuarios(id:str, db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
     divisa = c_obtener_divisa_por_abbr(db, id)
     respuesta = DivisaMensajeDato(
-        mensaje = "Divisa obtenida exitosamente",
+        detail = "Divisa obtenida exitosamente",
         dato = divisa,
     )
     return respuesta
@@ -28,7 +28,7 @@ async def obtener_usuarios(id:str, db: Session = Depends(get_db), user:dict=Depe
 async def crear_nueva_divisa(entrada: DivisaCreate, db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
     if crear_divisa(db, entrada):
         respuesta = Mensaje(
-            mensaje="Divisa creada exitosamente",
+            detail="Divisa creada exitosamente",
         )
         return respuesta
 
@@ -36,6 +36,6 @@ async def crear_nueva_divisa(entrada: DivisaCreate, db: Session = Depends(get_db
 async def actualizar_tipo_cambio(entrada: DivisaCambioUpdate, db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
     if actualizar_tipo_cambio_divisa(db, entrada):
         respuesta = Mensaje(
-            mensaje="Divisa actualizada exitosamente",
+            detail="Divisa actualizada exitosamente",
         )
         return respuesta

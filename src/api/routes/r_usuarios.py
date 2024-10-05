@@ -20,7 +20,7 @@ async def obtener_usuarios(db: Session = Depends(get_db), user:dict=Depends(get_
 async def obtener_usuarios(email:str, db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
     respuesta = c_obtener_usuario_por_email(db, email)
     response = UsuarioMensajeDato(
-        mensaje= 'Usuario obtenido exitosamente',
+        detail= 'Usuario obtenido exitosamente',
         dato=respuesta
     )
     return response
@@ -29,12 +29,12 @@ async def obtener_usuarios(email:str, db: Session = Depends(get_db), user:dict=D
 async def crear_nuevo_usuario(entrada: UsuarioCreate, db: Session = Depends(get_db)):
     if crear_usuario(db, entrada):
         respuesta = Mensaje(
-            mensaje = "Usuario creado exitosamente"
+            detail = "Usuario creado exitosamente"
         )
         return respuesta
     else:
         respuesta = Mensaje(
-            mensaje = "Error en la base de datos"
+            detail = "Error en la base de datos"
         )
         return respuesta
     
@@ -42,12 +42,12 @@ async def crear_nuevo_usuario(entrada: UsuarioCreate, db: Session = Depends(get_
 async def actualizar_is_logged(entrada:UsuarioSesion, db: Session = Depends(get_db)):
     if c_login(db, entrada):
         respuesta = Mensaje(
-            mensaje = "Inicio de sesión exitoso"
+            detail = "Inicio de sesión exitoso"
         )
         return respuesta
     else:
         respuesta = Mensaje(
-            mensaje = "Error en la base de datos"
+            detail = "Error en la base de datos"
         )
         return respuesta
     
@@ -55,11 +55,11 @@ async def actualizar_is_logged(entrada:UsuarioSesion, db: Session = Depends(get_
 async def actualizar_is_logged(entrada:UsuarioSesion, db: Session = Depends(get_db)):
     if c_logout(db, entrada):
         respuesta = Mensaje(
-            mensaje = "Cierre de sesión exitoso"
+            detail = "Cierre de sesión exitoso"
         )
         return respuesta
     else:
         respuesta = Mensaje(
-            mensaje = "Error en la base de datos"
+            detail = "Error en la base de datos"
         )
         return respuesta
