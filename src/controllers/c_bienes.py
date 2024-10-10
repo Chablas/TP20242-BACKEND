@@ -108,9 +108,10 @@ def c_actualizar_bien(db, id:str, entrada:BienUpdate):
     if validacion is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="El bien no existe")
+    validacion=db.query(ProductoModel).filter(ProductoModel.id==validacion.producto_id).first()
     if validacion.nombre == entrada.nombre:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre del Bien ya existe")
+            status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre del producto ya existe")
     validacion_categoria_id=db.query(CategoriaModel).filter(CategoriaModel.id==entrada.categoria_id).first()
     if validacion_categoria_id is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="La categoria_id no existe")
