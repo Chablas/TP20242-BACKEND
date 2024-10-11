@@ -24,6 +24,7 @@ class UsuarioSesion(BaseModel):
     email:str
 
 class UsuarioResponse(BaseModel):
+    id: int
     email:str
     password: str
     islogged: bool

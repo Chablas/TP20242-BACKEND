@@ -2,20 +2,20 @@ from fastapi import APIRouter, status, HTTPException
 from fastapi.params import Depends
 from sqlalchemy.orm import Session
 from src.api.db.models.m_usuarios import Usuario
-from src.api.db.schemas.s_usuarios import UsuarioSesion, UsuarioCreate
+from src.api.db.schemas.s_usuarios import UsuarioSesion, UsuarioCreate, UsuarioResponse
 from src.api.db.schemas.s_response import UsuarioMensajeDato, Mensaje
 from src.api.db.sesion import get_db
 from src.auth.auth import get_current_user
-from src.controllers.c_usuarios import crear_usuario, c_login, c_logout, c_obtener_usuario_por_email
+from src.controllers.c_usuarios import crear_usuario, c_login, c_logout, c_obtener_usuario_por_email, c_obtener_todos_los_usuarios
 from typing import List
 
 gestionar_usuarios = APIRouter()
-"""
-@gestionar_usuarios.get("/get/usuarios", response_model=List[UsuarioCompleto], name="Obtener todos los usuarios")
-async def obtener_usuarios(db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
-    usuarios=db.query(Usuario).all()
-    return 
-"""
+
+@gestionar_usuarios.get("/get/usuarios", response_model=List[UsuarioResponse], name="Obtener todos los usuarios")
+async def r_obtener_usuarios(db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
+    array = c_obtener_todos_los_usuarios(db)
+    return array
+
 @gestionar_usuarios.get("/get/usuario/{email}", response_model=UsuarioMensajeDato, name="Obtener un usuario por su correo")
 async def obtener_usuarios(email:str, db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
     respuesta = c_obtener_usuario_por_email(db, email)
