@@ -52,12 +52,9 @@ def c_crear_servicio(db, entrada:ServicioCreate):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo servicio_no_incluye está vacío")
     if entrada.restricciones == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo restricciones está vacío")
-    validacion=db.query(ServicioModel).filter(ServicioModel.id==id).first()
-    if validacion is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="El servicio no existe")
-    validacion=db.query(ProductoModel).filter(ProductoModel.id==validacion.producto_id).first()
-    if validacion.nombre == entrada.nombre:
+    
+    validacion = db.query(ProductoModel).filter(ProductoModel.nombre==entrada.nombre).first()
+    if validacion is not None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre del servicio ya existe")
     # Validaciones fin
@@ -109,13 +106,15 @@ def c_actualizar_servicio(db, id:str, entrada:ServicioUpdate):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo servicio_no_incluye está vacío")
     if entrada.restricciones == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo restricciones está vacío")
+    
     validacion=db.query(ServicioModel).filter(ServicioModel.id==id).first()
     if validacion is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="El servicio no existe")
+    validacion=db.query(ProductoModel).filter(ProductoModel.id==validacion.producto_id).first()
     if validacion.nombre == entrada.nombre:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre del servicio ya existe")
+            status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre del producto ya existe")
     # Validaciones fin
     try:
         servicio = db.query(ServicioModel).filter(ServicioModel.id==id).first()

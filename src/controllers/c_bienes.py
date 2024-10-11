@@ -104,6 +104,7 @@ def c_actualizar_bien(db, id:str, entrada:BienUpdate):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo especificaciones_tecnicas está vacío")
     if entrada.categoria_id == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo categoria_id está vacío")
+    
     validacion=db.query(BienModel).filter(BienModel.id==id).first()
     if validacion is None:
         raise HTTPException(
