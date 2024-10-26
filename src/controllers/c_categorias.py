@@ -23,6 +23,9 @@ def c_obtener_categoria_por_id(db, id:str):
 
 def c_crear_categoria(db, entrada:CategoriaCreate):
     # Validaciones inicio
+    entrada.nombre = entrada.nombre.strip()
+    entrada.descripcion = entrada.descripcion.strip()
+    entrada.imagen = entrada.imagen.strip()
     if entrada.nombre == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo nombre está vacío")
     if entrada.descripcion == "":
@@ -49,9 +52,9 @@ def c_crear_categoria(db, entrada:CategoriaCreate):
     
 def c_actualizar_categoria(db, id:str, entrada:CategoriaUpdate):
     # Validaciones inicio
-    nombreStrip = entrada.nombre.strip()
-    descripcionStrip = entrada.descripcion.strip()
-    imagenStrip = entrada.imagen.strip()
+    entrada.nombre = entrada.nombre.strip()
+    entrada.descripcion = entrada.descripcion.strip()
+    entrada.imagen = entrada.imagen.strip()
     if entrada.nombre == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo nombre está vacío")
     if entrada.descripcion == "":

@@ -15,6 +15,8 @@ def c_obtener_todos_los_almacenes(db):
 
 def c_crear_almacen(db, entrada:AlmacenCreate):
     # Validaciones inicio
+    entrada.nombre = entrada.nombre.strip()
+    entrada.ubicacion = entrada.ubicacion.strip()
     if entrada.nombre == "":
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="El campo nombre está vacío")
@@ -41,6 +43,8 @@ def c_crear_almacen(db, entrada:AlmacenCreate):
     
 def c_actualizar_almacen(db, id:str, entrada:AlmacenUpdate):
     # Validaciones inicio
+    entrada.nombre = entrada.nombre.strip()
+    entrada.ubicacion = entrada.ubicacion.strip()
     if entrada.nombre == "":
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="El campo nombre está vacío")
@@ -52,9 +56,10 @@ def c_actualizar_almacen(db, id:str, entrada:AlmacenUpdate):
     if validacion is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="El almacén no existe")
-    if validacion.nombre == entrada.nombre:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre del Almacén ya existe")
+    validacion=db.query(AlmacenModel).filter(AlmacenModel.nombre==entrada.nombre).first()
+    if validacion is not None:
+        if validacion.id != entrada.id:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre del Almacén ya existe")
     # Validaciones fin
     try:
         almacen = db.query(AlmacenModel).filter(AlmacenModel.id==id).first()

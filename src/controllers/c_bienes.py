@@ -32,12 +32,21 @@ def c_obtener_todos_los_bienes(db):
 
 def c_crear_bien(db, entrada:BienCreate):
     # Validaciones inicio
+    entrada.nombre = entrada.nombre.strip()
+    entrada.informacion_general = entrada.informacion_general.strip()
+    entrada.garantia = entrada.garantia.strip()
+    entrada.imagen = entrada.imagen.strip()
+    entrada.marca = entrada.marca.strip()
+    entrada.especificaciones_tecnicas = entrada.especificaciones_tecnicas.strip()
+
     if entrada.nombre == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo nombre está vacío")
     if entrada.informacion_general == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo informacion_general está vacío")
     if entrada.precio == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo precio está vacío")
+    if entrada.precio<0:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El precio tiene que ser un número positivo")
     if entrada.garantia == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo garantia está vacío")
     if entrada.estado == "":
@@ -86,12 +95,21 @@ def c_crear_bien(db, entrada:BienCreate):
     
 def c_actualizar_bien(db, id:str, entrada:BienUpdate):
     # Validaciones inicio
+    entrada.nombre = entrada.nombre.strip()
+    entrada.informacion_general = entrada.informacion_general.strip()
+    entrada.garantia = entrada.garantia.strip()
+    entrada.imagen = entrada.imagen.strip()
+    entrada.marca = entrada.marca.strip()
+    entrada.especificaciones_tecnicas = entrada.especificaciones_tecnicas.strip()
+
     if entrada.nombre == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo nombre está vacío")
     if entrada.informacion_general == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo informacion_general está vacío")
     if entrada.precio == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo precio está vacío")
+    if entrada.precio<0:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El precio tiene que ser un número positivo")
     if entrada.garantia == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo garantia está vacío")
     if entrada.estado == "":
@@ -107,12 +125,11 @@ def c_actualizar_bien(db, id:str, entrada:BienUpdate):
     
     validacion=db.query(BienModel).filter(BienModel.id==id).first()
     if validacion is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="El bien no existe")
-    validacion=db.query(ProductoModel).filter(ProductoModel.id==validacion.producto_id).first()
-    if validacion.nombre == entrada.nombre:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre del producto ya existe")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="El bien no existe")
+    validacion2=db.query(ProductoModel).filter(ProductoModel.nombre==entrada.nombre).first()
+    if validacion2 is not None:
+        if validacion2.id != validacion.producto_id:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre del Producto ya existe")
     validacion_categoria_id=db.query(CategoriaModel).filter(CategoriaModel.id==entrada.categoria_id).first()
     if validacion_categoria_id is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="La categoria_id no existe")
