@@ -32,6 +32,14 @@ def c_obtener_todos_los_servicios(db):
 
 def c_crear_servicio(db, entrada:ServicioCreate):
     # Validaciones inicio
+    entrada.nombre = entrada.nombre.strip()
+    entrada.informacion_general = entrada.informacion_general.strip()
+    entrada.garantia = entrada.garantia.strip()
+    entrada.imagen = entrada.imagen.strip()
+    entrada.condiciones_previas = entrada.condiciones_previas.strip()
+    entrada.servicio_incluye = entrada.servicio_incluye.strip()
+    entrada.servicio_no_incluye = entrada.servicio_no_incluye.strip()
+    entrada.restricciones = entrada.restricciones.strip()
     if entrada.nombre == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo nombre está vacío")
     if entrada.informacion_general == "":
@@ -86,6 +94,14 @@ def c_crear_servicio(db, entrada:ServicioCreate):
     
 def c_actualizar_servicio(db, id:str, entrada:ServicioUpdate):
     # Validaciones inicio
+    entrada.nombre = entrada.nombre.strip()
+    entrada.informacion_general = entrada.informacion_general.strip()
+    entrada.garantia = entrada.garantia.strip()
+    entrada.imagen = entrada.imagen.strip()
+    entrada.condiciones_previas = entrada.condiciones_previas.strip()
+    entrada.servicio_incluye = entrada.servicio_incluye.strip()
+    entrada.servicio_no_incluye = entrada.servicio_no_incluye.strip()
+    entrada.restricciones = entrada.restricciones.strip()
     if entrada.nombre == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo nombre está vacío")
     if entrada.informacion_general == "":
@@ -111,8 +127,8 @@ def c_actualizar_servicio(db, id:str, entrada:ServicioUpdate):
     if validacion is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="El servicio no existe")
-    validacion=db.query(ProductoModel).filter(ProductoModel.id==validacion.producto_id).first()
-    if validacion.nombre == entrada.nombre:
+    validacion2=db.query(ProductoModel).filter(ProductoModel.nombre==entrada.nombre).first()
+    if validacion2.id != validacion.id:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre del producto ya existe")
     # Validaciones fin

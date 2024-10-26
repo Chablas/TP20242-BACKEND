@@ -56,9 +56,9 @@ def c_actualizar_almacen(db, id:str, entrada:AlmacenUpdate):
     if validacion is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="El almacén no existe")
-    validacion=db.query(AlmacenModel).filter(AlmacenModel.nombre==entrada.nombre).first()
-    if validacion is not None:
-        if validacion.id != entrada.id:
+    validacion2=db.query(AlmacenModel).filter(AlmacenModel.nombre==entrada.nombre).first()
+    if validacion2 is not None:
+        if validacion2.id != validacion.id:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre del Almacén ya existe")
     # Validaciones fin
     try:

@@ -1,12 +1,12 @@
 import datetime
-from sqlalchemy import Column, Integer, String, DateTime, Float
+from sqlalchemy import Column, Integer, BigInteger, String, DateTime, Float
 from src.api.db.conexion import Base
 
 class Proveedor(Base):
     __tablename__ = "proveedores"
     id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     nombre = Column(String(50))
-    ruc = Column(Integer)
+    ruc = Column(BigInteger)
     direccion = Column(String(150))
     correo = Column(String(50))
     telefono = Column(Integer)
