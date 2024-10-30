@@ -128,9 +128,9 @@ def c_actualizar_servicio(db, id:str, entrada:ServicioUpdate):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="El servicio no existe")
     validacion2=db.query(ProductoModel).filter(ProductoModel.nombre==entrada.nombre).first()
-    if validacion2.id != validacion.producto_id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre del producto ya existe")
+    if validacion2 is not None:
+        if validacion2.id != validacion.producto_id:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre del producto ya existe")
     # Validaciones fin
     try:
         servicio = db.query(ServicioModel).filter(ServicioModel.id==id).first()
