@@ -34,7 +34,8 @@ html = """
 
 @gestionar_emails.post("/email")
 async def simple_send(email: EmailSchema) -> JSONResponse:
-
+    print(EMAIL)
+    print(PASSWORD)
     message = MessageSchema(
         subject="Fastapi-Mail module",
         recipients=email.dict().get("email"),
