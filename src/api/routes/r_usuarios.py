@@ -2,12 +2,15 @@ from fastapi import APIRouter, status, HTTPException
 from fastapi.params import Depends
 from sqlalchemy.orm import Session
 from src.api.db.models.m_usuarios import Usuario
-from src.api.db.schemas.s_usuarios import UsuarioSesion, UsuarioCreate, UsuarioResponse
-from src.api.db.schemas.s_response import UsuarioMensajeDato, Mensaje
+from src.api.db.schemas.s_usuarios import UsuarioSesion, UsuarioCreate, UsuarioResponse, UsuarioLogin
+from src.api.db.schemas.s_response import UsuarioMensajeDato, Mensaje, Token
 from src.api.db.sesion import get_db
-from src.auth.auth import get_current_user
+from src.auth.auth import get_current_user, create_access_token, authenticate_user
 from src.controllers.c_usuarios import crear_usuario, c_login, c_logout, c_obtener_usuario_por_email, c_obtener_todos_los_usuarios
 from typing import List
+from typing import Annotated
+from fastapi.security import OAuth2PasswordRequestForm
+from datetime import timedelta
 
 gestionar_usuarios = APIRouter()
 
@@ -63,3 +66,15 @@ async def actualizar_is_logged(entrada:UsuarioSesion, db: Session = Depends(get_
             detail = "Error en la base de datos"
         )
         return respuesta
+    
+@gestionar_usuarios.post("/api/token", response_model=Token, name="Generar token")
+async def r_devolver_token(entrada: Annotated[OAuth2PasswordRequestForm, Depends()], db: Session = Depends(get_db)):
+    usuario = authenticate_user(entrada.username, entrada.password, db)
+    if not usuario:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Credenciales inválidas")
+    token = create_access_token(usuario.email, usuario.id, timedelta(minutes=20))
+    respuesta = Token(
+        access_token = token,
+        token_type = "bearer"
+    )
+    return respuesta

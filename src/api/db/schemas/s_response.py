@@ -38,3 +38,7 @@ class ServicioMensajeDato(BaseModel):
 class UsuarioMensajeDato(BaseModel):
     detail:str
     dato: UsuarioResponse
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str 
