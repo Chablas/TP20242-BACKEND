@@ -4,12 +4,41 @@ from src.api.db.models.m_productos import Producto as ProductoModel
 from src.api.db.models.m_bienes import Bien as BienModel
 from src.api.db.models.m_almacenes import Almacen as AlmacenModel
 from fastapi import HTTPException, status
+from datetime import datetime
 
 def c_obtener_todos_los_stock(db):
     try:
         productos_en_almacenes = db.query(Producto_AlmacenModel).all()
         array_datos = []
         for producto_almacen in productos_en_almacenes:
+            array_datos.append(producto_almacen)
+        return array_datos
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
+    
+def c_obtener_stock_de_un_producto_en_almacenes(db, producto_id:str):
+    producto_id = producto_id.strip()
+    if producto_id == False:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo producto_id está vacío")
+    try:
+        producto_en_almacenes = db.query(Producto_AlmacenModel).filter(Producto_AlmacenModel.producto_id==producto_id).all()
+        array_datos = []
+        for producto_almacen in producto_en_almacenes:
+            array_datos.append(producto_almacen)
+        return array_datos
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
+    
+def c_obtener_stock_de_almacen(db, almacen_id:str):
+    almacen_id = almacen_id.strip()
+    if almacen_id == False:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo almacen_id está vacío")
+    try:
+        productos_en_almacen = db.query(Producto_AlmacenModel).filter(Producto_AlmacenModel.almacen_id==almacen_id).all()
+        array_datos = []
+        for producto_almacen in productos_en_almacen:
             array_datos.append(producto_almacen)
         return array_datos
     except Exception as e:
@@ -43,7 +72,7 @@ def c_aumentar_stock(db, entrada:ProductoAlmacenCreate):
             datos = Producto_AlmacenModel(
                 producto_id = entrada.producto_id,
                 almacen_id = entrada.almacen_id,
-                cantidad = entrada.cantidad
+                cantidad = entrada.cantidad,
             )
             db.add(datos)
             db.commit()

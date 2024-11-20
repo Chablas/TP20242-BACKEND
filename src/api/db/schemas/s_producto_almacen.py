@@ -5,6 +5,7 @@ class ProductoAlmacenCompleto(BaseModel):
     producto_id:int
     almacen_id:int
     cantidad:int
+    created_at: str
     class Config:
         orm_mode=True
 
@@ -20,5 +21,6 @@ class ProductoAlmacenResponse(BaseModel):
     producto_id:int
     almacen_id:int
     cantidad:int
+    created_at: str
     class Config:
         orm_mode=True
