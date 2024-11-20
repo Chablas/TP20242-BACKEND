@@ -1,13 +1,13 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 class ProductoAlmacenCompleto(BaseModel):
     id: int
     producto_id:int
     almacen_id:int
     cantidad:int
-    created_at: str
     class Config:
-        orm_mode=True
+        orm_mode = True
 
 class ProductoAlmacenCreate(BaseModel):
     producto_id:int
@@ -21,6 +21,5 @@ class ProductoAlmacenResponse(BaseModel):
     producto_id:int
     almacen_id:int
     cantidad:int
-    created_at: str
     class Config:
-        orm_mode=True
+        orm_mode = True

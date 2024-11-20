@@ -5,6 +5,11 @@ from src.api.db.models.m_bienes import Bien as BienModel
 from src.api.db.models.m_almacenes import Almacen as AlmacenModel
 from fastapi import HTTPException, status
 from datetime import datetime
+import pytz
+LIMA_TZ = pytz.timezone("America/Lima")
+
+def obtener_fecha_actual_formato_str():
+    return datetime.now(LIMA_TZ).strftime("%Y-%m-%d %H:%M:%S")
 
 def c_obtener_todos_los_stock(db):
     try:
