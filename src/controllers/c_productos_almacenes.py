@@ -4,18 +4,17 @@ from src.api.db.models.m_productos import Producto as ProductoModel
 from src.api.db.models.m_bienes import Bien as BienModel
 from src.api.db.models.m_almacenes import Almacen as AlmacenModel
 from fastapi import HTTPException, status
-"""
+
 def c_obtener_todos_los_stock(db):
     try:
-        productos_en_almacenes = db.query(CategoriaModel).all()
+        productos_en_almacenes = db.query(Producto_AlmacenModel).all()
         array_datos = []
-        for categoria in categorias:
-            array_datos.append(categoria)
+        for producto_almacen in productos_en_almacenes:
+            array_datos.append(producto_almacen)
         return array_datos
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
-"""
 
 def c_aumentar_stock(db, entrada:ProductoAlmacenCreate):
     # Validaciones inicio
@@ -87,10 +86,10 @@ def c_disminuir_stock(db, entrada:ProductoAlmacenCreate):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No se puede retirar el stock")
 
     if producto_almacen is not None:
+        producto_almacen.cantidad -= entrada.cantidad
+        if producto_almacen.cantidad < 0:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No se puede retirar el stock")
         try:
-            producto_almacen.cantidad -= entrada.cantidad
-            if producto_almacen.cantidad < 0:
-                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No se puede retirar el stock")
             db.add(producto_almacen)
             db.commit()
             return True
