@@ -15,12 +15,12 @@ async def r_obtener_productos_almacenes(db: Session = Depends(get_db)):
     array = c_obtener_todos_los_stock(db)
     return array
 
-@gestionar_productos_almacenes.get("/get/almacen/{id}", response_model=List[ProductoAlmacenResponse], name="Obtener una categoria por su id")
+@gestionar_productos_almacenes.get("/get/almacen/{id}", response_model=List[ProductoAlmacenResponse], name="Obtener los almacenes que contienen cierto producto")
 async def r_obtener_stock_de_almacen(almacen_id:str, db: Session = Depends(get_db)):
     array = c_obtener_stock_de_almacen(db, almacen_id)
     return array
 
-@gestionar_productos_almacenes.get("/get/producto/{id}", response_model=List[ProductoAlmacenResponse], name="Obtener una categoria por su id")
+@gestionar_productos_almacenes.get("/get/producto/{id}", response_model=List[ProductoAlmacenResponse], name="Obtener todo el stock de un almacén")
 async def r_obtener_stock_de_un_producto_en_almacenes(producto_id:str, db: Session = Depends(get_db)):
     array = c_obtener_stock_de_un_producto_en_almacenes(db, producto_id)
     return array
