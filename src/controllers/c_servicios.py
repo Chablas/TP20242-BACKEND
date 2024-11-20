@@ -130,7 +130,7 @@ def c_actualizar_servicio(db, id:str, entrada:ServicioUpdate):
     validacion2=db.query(ProductoModel).filter(ProductoModel.nombre==entrada.nombre).first()
     if validacion2 is not None:
         if int(validacion2.id) != int(validacion.producto_id):
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre del producto ya existe")
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre del servicio ya existe")
     # Validaciones fin
     try:
         servicio = db.query(ServicioModel).filter(ServicioModel.id==id).first()
