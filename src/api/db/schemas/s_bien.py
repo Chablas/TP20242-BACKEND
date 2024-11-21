@@ -22,6 +22,11 @@ class BienCreate(BaseModel):
     class Config:
         orm_mode=True
 
+class BienImagen(BaseModel):
+    imagen: str
+    class Config:
+        orm_mode=True
+
 class BienUpdate(BaseModel):
     nombre:str
     informacion_general:str

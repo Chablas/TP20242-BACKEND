@@ -1,8 +1,9 @@
 from src.api.db.models.m_productos import Producto as ProductoModel
 from src.api.db.models.m_categorias import Categoria as CategoriaModel
 from src.api.db.models.m_bienes import Bien as BienModel
-from src.api.db.schemas.s_bien import BienCreate, BienUpdate, BienResponse
+from src.api.db.schemas.s_bien import BienCreate, BienUpdate, BienResponse, BienImagen
 from fastapi import HTTPException, status
+import os
 
 def c_obtener_todos_los_bienes(db):
     try:
@@ -88,6 +89,31 @@ def c_crear_bien(db, entrada:BienCreate):
         )
         db.add(datos)
         db.commit()
+        return True
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
+    
+def c_añadir_imagen_bien(db, id:str, imagen:str):
+    # Validaciones inicio
+    imagen = imagen.strip()
+    if imagen == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo imagen está vacío")
+
+    validacion = db.query(BienModel).filter(BienModel.id==id).first()
+    if validacion is None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El bien no existe")
+    validacion = db.query(ProductoModel).filter(validacion.producto_id==ProductoModel.id).first()
+    if validacion is None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El producto no existe")
+    # Validaciones fin
+    try:
+        image_path = f".{validacion.imagen}"
+        validacion.imagen = imagen
+        db.commit()
+        db.refresh(validacion)
+        if os.path.exists(image_path):
+            os.remove(image_path)
         return True
     except Exception as e:
         raise HTTPException(

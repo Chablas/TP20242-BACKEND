@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from src.api.routes.r_almacenes import gestionar_almacenes
 from src.api.routes.r_bienes import gestionar_bienes
@@ -35,6 +36,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.include_router(login_router)
 app.include_router(gestionar_almacenes, tags=["Gestionar Almacenes"])
