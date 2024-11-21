@@ -17,6 +17,12 @@ class ProveedorBienCreate(BaseModel):
     class Config:
         orm_mode=True
 
+class ProveedorBienDelete(BaseModel):
+    proveedor_id:int
+    bien_id:int
+    class Config:
+        orm_mode=True
+
 class ProveedorBienResponse(BaseModel):
     id: int
     precio:float
