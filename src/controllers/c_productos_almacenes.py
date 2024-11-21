@@ -1,15 +1,24 @@
 from src.api.db.models.m_productos_almacenes import Producto_Almacen as Producto_AlmacenModel
-from src.api.db.schemas.s_producto_almacen import ProductoAlmacenCreate, ProductoAlmacenCompleto, ProductoAlmacenResponse
-from src.api.db.models.m_productos import Producto as ProductoModel
+from src.api.db.schemas.s_producto_almacen import ProductoAlmacenCreate
 from src.api.db.models.m_bienes import Bien as BienModel
 from src.api.db.models.m_almacenes import Almacen as AlmacenModel
+from src.api.db.models.m_movimientos_almacenes import Movimiento_Almacen as Movimiento_AlmacenModel
 from fastapi import HTTPException, status
 from datetime import datetime
 import pytz
+
 LIMA_TZ = pytz.timezone("America/Lima")
 
-def obtener_fecha_actual_formato_str():
-    return datetime.now(LIMA_TZ).strftime("%Y-%m-%d %H:%M:%S")
+def c_obtener_todos_los_historiales_de_movimiento(db):
+    try:
+        historiales_de_movimientos = db.query(Movimiento_AlmacenModel).all()
+        array_datos = []
+        for historial_movimiento in historiales_de_movimientos:
+            array_datos.append(historial_movimiento)
+        return array_datos
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
 
 def c_obtener_todos_los_stock(db):
     try:
@@ -81,6 +90,15 @@ def c_aumentar_stock(db, entrada:ProductoAlmacenCreate):
             )
             db.add(datos)
             db.commit()
+            datos = Movimiento_AlmacenModel(
+                producto_id = entrada.producto_id,
+                almacen_id = entrada.almacen_id,
+                cantidad = entrada.cantidad,
+                tipo_movimiento = "ENTRADA",
+                created_at = datetime.now(LIMA_TZ).strftime("%Y-%m-%d %H:%M:%S")
+            )
+            db.add(datos)
+            db.commit()
             return True
         except Exception as e:
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
@@ -90,6 +108,13 @@ def c_aumentar_stock(db, entrada:ProductoAlmacenCreate):
             producto_almacen.cantidad += entrada.cantidad
             db.add(producto_almacen)
             db.commit()
+            datos = Movimiento_AlmacenModel(
+                producto_id = entrada.producto_id,
+                almacen_id = entrada.almacen_id,
+                cantidad = entrada.cantidad,
+                tipo_movimiento = "ENTRADA",
+                created_at = datetime.now(LIMA_TZ).strftime("%Y-%m-%d %H:%M:%S")
+            )
             return True
         except Exception as e:
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
@@ -125,6 +150,15 @@ def c_disminuir_stock(db, entrada:ProductoAlmacenCreate):
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No se puede retirar el stock")
         try:
             db.add(producto_almacen)
+            db.commit()
+            datos = Movimiento_AlmacenModel(
+                producto_id = entrada.producto_id,
+                almacen_id = entrada.almacen_id,
+                cantidad = entrada.cantidad,
+                tipo_movimiento = "SALIDA",
+                created_at = datetime.now(LIMA_TZ).strftime("%Y-%m-%d %H:%M:%S")
+            )
+            db.add(datos)
             db.commit()
             return True
         except Exception as e:
