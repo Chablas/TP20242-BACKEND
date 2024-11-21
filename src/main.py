@@ -10,6 +10,7 @@ from src.api.routes.r_login import login_router
 from src.api.routes.r_email import gestionar_emails
 from src.api.routes.r_productos_almacenes import gestionar_productos_almacenes
 from src.api.routes.r_roles import gestionar_roles
+from src.api.routes.r_usuarios_roles import gestionar_usuarios_roles
 
 description = """
 Para consumir los servicios con símbolo de candado primero debes autenticarte con una cuenta.
@@ -42,6 +43,7 @@ app.include_router(gestionar_categorias, tags=["Gestionar Categorías"])
 app.include_router(gestionar_emails, tags=["Gestionar Emails"])
 app.include_router(gestionar_proveedores, tags=["Gestionar Proveedores"])
 app.include_router(gestionar_roles, tags=["Gestionar Roles"])
+app.include_router(gestionar_usuarios_roles, tags=["Gestionar Roles de Usuarios"])
 app.include_router(gestionar_servicios, tags=["Gestionar Servicios"])
 app.include_router(gestionar_productos_almacenes, tags=["Gestionar Stock"])
 app.include_router(gestionar_usuarios, tags=["Gestionar Usuarios"])

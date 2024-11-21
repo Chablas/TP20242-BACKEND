@@ -115,6 +115,8 @@ def c_aumentar_stock(db, entrada:ProductoAlmacenCreate):
                 tipo_movimiento = "ENTRADA",
                 created_at = datetime.now(LIMA_TZ).strftime("%Y-%m-%d %H:%M:%S")
             )
+            db.add(datos)
+            db.commit()
             return True
         except Exception as e:
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
