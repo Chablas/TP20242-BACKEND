@@ -1,6 +1,7 @@
 from src.api.db.models.m_categorias import Categoria as CategoriaModel
 from src.api.db.schemas.s_categorias import CategoriaCreate, CategoriaResponse, CategoriaUpdate
 from fastapi import HTTPException, status
+import os
 
 def c_obtener_todos_las_categorias(db):
     try:
@@ -49,7 +50,29 @@ def c_crear_categoria(db, entrada:CategoriaCreate):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
-    
+
+def c_añadir_imagen_categoria(db, id:str, imagen:str):
+    # Validaciones inicio
+    imagen = imagen.strip()
+    if imagen == "":
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo imagen está vacío")
+
+    validacion = db.query(CategoriaModel).filter(CategoriaModel.id==id).first()
+    if validacion is None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="La categoría no existe")
+    # Validaciones fin
+    try:
+        image_path = f".{validacion.imagen}"
+        validacion.imagen = imagen
+        db.commit()
+        db.refresh(validacion)
+        if os.path.exists(image_path):
+            os.remove(image_path)
+        return True
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
+
 def c_actualizar_categoria(db, id:str, entrada:CategoriaUpdate):
     # Validaciones inicio
     entrada.nombre = entrada.nombre.strip()
