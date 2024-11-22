@@ -13,6 +13,7 @@ from src.api.db.models.m_roles import Base
 from src.api.db.models.m_usuarios_roles import Base
 from src.api.db.models.m_proveedores_bienes import Base
 from src.api.db.models.m_carritos import Base
+from src.api.db.models.m_carritos_items import Base
 
 Base.metadata.create_all(bind=engine)
 
