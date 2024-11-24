@@ -1,7 +1,7 @@
 from google.cloud import storage
 import os
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r'gcskey.json'
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r'etc/secrets/gcs-key.json'
 bucket_name="tallerdeproyectoscompusave"
 
 # define function that uploads a file from the bucket
