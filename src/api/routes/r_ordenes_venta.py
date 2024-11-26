@@ -17,3 +17,11 @@ async def r_crear_orden_compra(entrada: OrdenVentaCreate, db: Session = Depends(
             detail="Orden creada exitosamente",
         )
         return respuesta
+    
+@gestionar_ordenes_venta.post("/post/process_payment", response_model=Mensaje, name="Procesar pago")
+async def r_procesar_pago(entrada: OrdenVentaCreate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
+    if c_crear_orden_venta(db, entrada):
+        respuesta = Mensaje(
+            detail="Orden creada exitosamente",
+        )
+        return respuesta
