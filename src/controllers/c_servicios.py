@@ -209,7 +209,8 @@ def c_actualizar_servicio(db, id:int, entrada:ServicioUpdate):
         
         db.commit()
         db.refresh(servicio)
-        return True
+        respuesta = servicio.id
+        return respuesta
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")

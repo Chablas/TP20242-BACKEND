@@ -30,13 +30,13 @@ async def r_crear_bien(entrada: BienCreate, db: Session = Depends(get_db)):#, us
     )
     return respuesta
     
-@gestionar_bienes.put("/put/bien/{id}", response_model=Mensaje, name="Actualizar un bien")
+@gestionar_bienes.put("/put/bien/{id}", response_model=MensajeID, name="Actualizar un bien")
 async def r_actualizar_bien(id:int, entrada: BienUpdate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
-    if c_actualizar_bien(db, id, entrada):
-        respuesta = Mensaje(
-            detail="Bien actualizado exitosamente",
-        )
-        return respuesta
+    respuesta_id = c_actualizar_bien(db, id, entrada)
+    respuesta = MensajeID(
+        detail=respuesta_id,
+    )
+    return respuesta
     
 @gestionar_bienes.put("/put/bien/subir_imagen/{id}", response_model=Mensaje, name="Asignar una imagen a un bien")
 async def create_upload_file(id:int, file:UploadFile=File(...), db: Session = Depends(get_db)):

@@ -31,13 +31,13 @@ async def r_crear_servicio(entrada: ServicioCreate, db: Session = Depends(get_db
     )
     return respuesta
     
-@gestionar_servicios.put("/put/servicio/{id}", response_model=Mensaje, name="Actualizar un servicio")
+@gestionar_servicios.put("/put/servicio/{id}", response_model=MensajeID, name="Actualizar un servicio")
 async def r_actualizar_servicio(id:int, entrada: ServicioUpdate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
-    if c_actualizar_servicio(db, id, entrada):
-        respuesta = Mensaje(
-            detail="Servicio actualizado exitosamente",
-        )
-        return respuesta
+    respuesta_id = c_actualizar_servicio(db, id, entrada)
+    respuesta = MensajeID(
+        detail=respuesta_id,
+    )
+    return respuesta
     
 @gestionar_servicios.put("/put/servicio/subir_imagen/{id}", response_model=Mensaje, name="Asignar una imagen a un servicio")
 async def create_upload_file(id:int, file:UploadFile=File(...), db: Session = Depends(get_db)):

@@ -102,7 +102,8 @@ def c_actualizar_categoria(db, id:str, entrada:CategoriaUpdate):
         categoria.imagen = entrada.imagen
         db.commit()
         db.refresh(categoria)
-        return True
+        respuesta = categoria.id
+        return respuesta
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")

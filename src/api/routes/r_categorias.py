@@ -30,13 +30,13 @@ async def r_crear_categoria(entrada: CategoriaCreate, db: Session = Depends(get_
     )
     return respuesta
     
-@gestionar_categorias.put("/put/categoria/{id}", response_model=Mensaje, name="Actualizar una categoria")
+@gestionar_categorias.put("/put/categoria/{id}", response_model=MensajeID, name="Actualizar una categoria")
 async def r_actualizar_categoria(id:str, entrada: CategoriaUpdate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
-    if c_actualizar_categoria(db, id, entrada):
-        respuesta = Mensaje(
-            detail="Categoria actualizada exitosamente",
-        )
-        return respuesta
+    respuesta_id = c_actualizar_categoria(db, id, entrada)
+    respuesta = MensajeID(
+        detail=respuesta_id,
+    )
+    return respuesta
     
 @gestionar_categorias.put("/put/categoria/subir_imagen/{id}", response_model=Mensaje, name="Asignar una imagen a una categoría")
 async def create_upload_file(id:int, file:UploadFile=File(...), db: Session = Depends(get_db)):
