@@ -1,5 +1,5 @@
 from src.api.db.schemas.s_categorias import CategoriaCreate, CategoriaResponse, CategoriaUpdate
-from src.api.db.schemas.s_response import Mensaje
+from src.api.db.schemas.s_response import Mensaje, MensajeID
 from src.controllers.c_categorias import c_crear_categoria, c_obtener_todos_las_categorias, c_actualizar_categoria, c_eliminar_categoria, c_obtener_categoria_por_id, c_añadir_imagen_categoria
 from src.controllers.c_imagenes import subir_imagen
 from src.api.db.sesion import get_db
@@ -22,13 +22,13 @@ async def r_obtener_categorias(db: Session = Depends(get_db)):
 async def r_obtener_categoria_por_id(id:str, db: Session = Depends(get_db)):
     return c_obtener_categoria_por_id(db, id)
 
-@gestionar_categorias.post("/post/categoria", response_model=Mensaje, name="Crear una categoria")
+@gestionar_categorias.post("/post/categoria", response_model=MensajeID, name="Crear una categoria")
 async def r_crear_categoria(entrada: CategoriaCreate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
-    if c_crear_categoria(db, entrada):
-        respuesta = Mensaje(
-            detail="Categoria creada exitosamente",
-        )
-        return respuesta
+    respuesta_id = c_crear_categoria(db, entrada)
+    respuesta = MensajeID(
+        detail=respuesta_id,
+    )
+    return respuesta
     
 @gestionar_categorias.put("/put/categoria/{id}", response_model=Mensaje, name="Actualizar una categoria")
 async def r_actualizar_categoria(id:str, entrada: CategoriaUpdate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):

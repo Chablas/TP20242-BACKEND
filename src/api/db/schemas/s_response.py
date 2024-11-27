@@ -11,6 +11,9 @@ from typing import List
 class Mensaje(BaseModel):
     detail:str
 
+class MensajeID(BaseModel):
+    detail:int
+
 class AlmacenMensajeDato(BaseModel):
     detail:str
     dato: AlmacenResponse

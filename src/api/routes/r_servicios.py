@@ -1,6 +1,6 @@
 from src.api.db.schemas.s_servicio import ServicioCreate, ServicioResponse, ServicioUpdate
-from src.api.db.schemas.s_response import Mensaje
-from src.controllers.c_servicios import c_obtener_todos_los_servicios, c_crear_servicio, c_actualizar_servicio, c_eliminar_servicio
+from src.api.db.schemas.s_response import Mensaje, MensajeID
+from src.controllers.c_servicios import c_obtener_todos_los_servicios, c_crear_servicio, c_actualizar_servicio, c_eliminar_servicio, c_obtener_servicio_por_id
 from src.controllers.c_servicios import c_añadir_imagen_servicio
 from src.controllers.c_imagenes import subir_imagen
 from src.api.db.sesion import get_db
@@ -19,16 +19,20 @@ async def r_obtener_servicios(db: Session = Depends(get_db)):
     array = c_obtener_todos_los_servicios(db)
     return array
 
-@gestionar_servicios.post("/post/servicio", response_model=Mensaje, name="Crear un servicio")
+@gestionar_servicios.get("/get/servicio/{id}", response_model=ServicioResponse, name="Obtener un servicio por su id")
+async def r_obtener_servicio_por_id(id:int, db: Session = Depends(get_db)):
+    return c_obtener_servicio_por_id(db, id)
+
+@gestionar_servicios.post("/post/servicio", response_model=MensajeID, name="Crear un servicio")
 async def r_crear_servicio(entrada: ServicioCreate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
-    if c_crear_servicio(db, entrada):
-        respuesta = Mensaje(
-            detail="Servicio creado exitosamente",
-        )
-        return respuesta
+    respuesta_id = c_crear_servicio(db, entrada)
+    respuesta = MensajeID(
+        detail=respuesta_id,
+    )
+    return respuesta
     
 @gestionar_servicios.put("/put/servicio/{id}", response_model=Mensaje, name="Actualizar un servicio")
-async def r_actualizar_servicio(id:str, entrada: ServicioUpdate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
+async def r_actualizar_servicio(id:int, entrada: ServicioUpdate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_actualizar_servicio(db, id, entrada):
         respuesta = Mensaje(
             detail="Servicio actualizado exitosamente",
@@ -45,7 +49,7 @@ async def create_upload_file(id:int, file:UploadFile=File(...), db: Session = De
         return respuesta
     
 @gestionar_servicios.delete("/delete/servicio/{id}", response_model=Mensaje, name="Eliminar un servicio")
-async def r_eliminar_servicio(id:str, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
+async def r_eliminar_servicio(id:int, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_eliminar_servicio(db, id):
         respuesta = Mensaje(
             detail="Servicio eliminado exitosamente",

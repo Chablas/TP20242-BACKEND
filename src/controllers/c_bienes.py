@@ -30,6 +30,29 @@ def c_obtener_todos_los_bienes(db):
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
+    
+def c_obtener_bien_por_id(db, id:int):
+    try:
+        bien = db.query(BienModel).filter(BienModel.id==id).first()
+        producto = db.query(ProductoModel).filter(ProductoModel.id==bien.producto_id).first()
+        datos = BienResponse(
+            id = bien.id,
+                nombre = producto.nombre,
+                informacion_general = producto.informacion_general,
+                precio = producto.precio,
+                garantia = producto.garantia,
+                estado = producto.estado,
+                imagen = producto.imagen,
+
+                marca = bien.marca,
+                especificaciones_tecnicas = bien.especificaciones_tecnicas,
+                producto_id = bien.producto_id,
+                categoria_id = bien.categoria_id,
+        )
+        return datos
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
 
 def c_crear_bien(db, entrada:BienCreate):
     # Validaciones inicio
@@ -46,8 +69,8 @@ def c_crear_bien(db, entrada:BienCreate):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo informacion_general está vacío")
     if entrada.precio == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo precio está vacío")
-    if entrada.precio<0:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El precio tiene que ser un número positivo")
+    if entrada.precio<=0:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo precio tiene que ser mayor a 0")
     if entrada.garantia == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo garantia está vacío")
     if entrada.estado == "":
@@ -89,12 +112,14 @@ def c_crear_bien(db, entrada:BienCreate):
         )
         db.add(datos)
         db.commit()
-        return True
+        db.refresh(datos)
+        respuesta = datos.id
+        return respuesta
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
     
-def c_añadir_imagen_bien(db, id:str, imagen:str):
+def c_añadir_imagen_bien(db, id:int, imagen:str):
     # Validaciones inicio
     imagen = imagen.strip()
     if imagen == "":
@@ -119,7 +144,7 @@ def c_añadir_imagen_bien(db, id:str, imagen:str):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
     
-def c_actualizar_bien(db, id:str, entrada:BienUpdate):
+def c_actualizar_bien(db, id:int, entrada:BienUpdate):
     # Validaciones inicio
     entrada.nombre = entrada.nombre.strip()
     entrada.informacion_general = entrada.informacion_general.strip()
@@ -134,8 +159,8 @@ def c_actualizar_bien(db, id:str, entrada:BienUpdate):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo informacion_general está vacío")
     if entrada.precio == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo precio está vacío")
-    if entrada.precio<0:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El precio tiene que ser un número positivo")
+    if entrada.precio<=0:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo precio tiene que ser mayor a 0")
     if entrada.garantia == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo garantia está vacío")
     if entrada.estado == "":
@@ -182,7 +207,7 @@ def c_actualizar_bien(db, id:str, entrada:BienUpdate):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
     
-def c_eliminar_bien(db, id:str):
+def c_eliminar_bien(db, id:int):
     # Validaciones inicio
     validacion=db.query(BienModel).filter(BienModel.id==id).first()
     if validacion is None:

@@ -31,6 +31,30 @@ def c_obtener_todos_los_servicios(db):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
 
+def c_obtener_servicio_por_id(db, id:int):
+    try:
+        servicio = db.query(ServicioModel).filter(ServicioModel.id==id).first()
+        producto = db.query(ProductoModel).filter(ProductoModel.id==servicio.producto_id).first()
+        datos = ServicioResponse(
+            id = servicio.id,
+            nombre = producto.nombre,
+            informacion_general = producto.informacion_general,
+            precio = producto.precio,
+            garantia = producto.garantia,
+            estado = producto.estado,
+            imagen = producto.imagen,
+
+            condiciones_previas = servicio.condiciones_previas,
+            servicio_incluye = servicio.servicio_incluye,
+            servicio_no_incluye = servicio.servicio_no_incluye,
+            restricciones = servicio.restricciones,
+            producto_id = servicio.producto_id,
+        )
+        return datos
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
+
 def c_crear_servicio(db, entrada:ServicioCreate):
     # Validaciones inicio
     entrada.nombre = entrada.nombre.strip()
@@ -47,6 +71,8 @@ def c_crear_servicio(db, entrada:ServicioCreate):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo informacion_general está vacío")
     if entrada.precio == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo precio está vacío")
+    if entrada.precio <= 0:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo precio tiene que ser mayor a 0")
     if entrada.garantia == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo garantia está vacío")
     if entrada.estado == "":
@@ -88,12 +114,14 @@ def c_crear_servicio(db, entrada:ServicioCreate):
         )
         db.add(datos)
         db.commit()
-        return True
+        db.refresh(datos)
+        respuesta = datos.id
+        return respuesta
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
 
-def c_añadir_imagen_servicio(db, id:str, imagen:str):
+def c_añadir_imagen_servicio(db, id:int, imagen:str):
     # Validaciones inicio
     imagen = imagen.strip()
     if imagen == "":
@@ -118,7 +146,7 @@ def c_añadir_imagen_servicio(db, id:str, imagen:str):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
 
-def c_actualizar_servicio(db, id:str, entrada:ServicioUpdate):
+def c_actualizar_servicio(db, id:int, entrada:ServicioUpdate):
     # Validaciones inicio
     entrada.nombre = entrada.nombre.strip()
     entrada.informacion_general = entrada.informacion_general.strip()
@@ -134,6 +162,8 @@ def c_actualizar_servicio(db, id:str, entrada:ServicioUpdate):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo informacion_general está vacío")
     if entrada.precio == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo precio está vacío")
+    if entrada.precio <= 0:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo precio tiene que ser mayor a 0")
     if entrada.garantia == "":
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo garantia está vacío")
     if entrada.estado == "":
@@ -184,7 +214,7 @@ def c_actualizar_servicio(db, id:str, entrada:ServicioUpdate):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
     
-def c_eliminar_servicio(db, id:str):
+def c_eliminar_servicio(db, id:int):
     # Validaciones inicio
     validacion=db.query(ServicioModel).filter(ServicioModel.id==id).first()
     if validacion is None:
