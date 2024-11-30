@@ -14,16 +14,16 @@ from fastapi import File, UploadFile
 gestionar_categorias = APIRouter()
 
 @gestionar_categorias.get("/get/categorias", response_model=List[CategoriaResponse], name="Obtener todas las categorias")
-async def r_obtener_categorias(db: Session = Depends(get_db)):
+async def r_obtener_categorias(db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
     array = c_obtener_todos_las_categorias(db)
     return array
 
 @gestionar_categorias.get("/get/categoria/{id}", response_model=CategoriaResponse, name="Obtener una categoria por su id")
-async def r_obtener_categoria_por_id(id:str, db: Session = Depends(get_db)):
+async def r_obtener_categoria_por_id(id:str, db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
     return c_obtener_categoria_por_id(db, id)
 
 @gestionar_categorias.post("/post/categoria", response_model=MensajeID, name="Crear una categoria")
-async def r_crear_categoria(entrada: CategoriaCreate, db: Session = Depends(get_db), user:dict=Depends(get_current_user)):#
+async def r_crear_categoria(entrada: CategoriaCreate, db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
     respuesta_id = c_crear_categoria(db, entrada)
     respuesta = MensajeID(
         detail=respuesta_id,
@@ -31,7 +31,7 @@ async def r_crear_categoria(entrada: CategoriaCreate, db: Session = Depends(get_
     return respuesta
     
 @gestionar_categorias.put("/put/categoria/{id}", response_model=MensajeID, name="Actualizar una categoria")
-async def r_actualizar_categoria(id:str, entrada: CategoriaUpdate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
+async def r_actualizar_categoria(id:str, entrada: CategoriaUpdate, db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
     respuesta_id = c_actualizar_categoria(db, id, entrada)
     respuesta = MensajeID(
         detail=respuesta_id,
@@ -39,7 +39,7 @@ async def r_actualizar_categoria(id:str, entrada: CategoriaUpdate, db: Session =
     return respuesta
     
 @gestionar_categorias.put("/put/categoria/subir_imagen/{id}", response_model=Mensaje, name="Asignar una imagen a una categoría")
-async def create_upload_file(id:int, file:UploadFile=File(...), db: Session = Depends(get_db)):
+async def create_upload_file(id:int, file:UploadFile=File(...), db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
     imagen_ruta = await subir_imagen(file)
     if c_añadir_imagen_categoria(db, id, imagen_ruta):
         respuesta = Mensaje(
@@ -48,7 +48,7 @@ async def create_upload_file(id:int, file:UploadFile=File(...), db: Session = De
         return respuesta
     
 @gestionar_categorias.delete("/delete/categoria/{id}", response_model=Mensaje, name="Eliminar una categoria")
-async def r_eliminar_categoria(id:str, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
+async def r_eliminar_categoria(id:str, db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
     if c_eliminar_categoria(db, id):
         respuesta = Mensaje(
             detail="Categoria eliminada exitosamente",
