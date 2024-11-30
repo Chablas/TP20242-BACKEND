@@ -6,6 +6,18 @@ from src.api.db.schemas.s_carritos import CarritoCompleto, CarritoCreate, Carrit
 from src.api.db.schemas.s_carritos_items import CarritoItemsCompleto, CarritoItemsCreate, CarritoItemsUpdate, CarritoItemsResponse
 from fastapi import HTTPException, status
 
+def c_ver_items_de_carrito_por_usuario(db, usuario_id:int):
+    try:
+        carrito = db.query(CarritoModel).filter(CarritoModel.usuario_id==usuario_id).first()
+        carritoitems = db.query(Carrito_ItemsModel).filter(Carrito_ItemsModel.carrito_id==carrito.id).all()
+        array_datos = []
+        for item in carritoitems:
+            array_datos.append(item)
+        return array_datos
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
+
 def c_añadir_item_a_carrito(db, usuario_id:int, entrada:CarritoItemsCreate):
     # Validaciones inicio
     if entrada.producto_id == False:
