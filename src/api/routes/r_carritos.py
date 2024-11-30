@@ -1,6 +1,6 @@
 from src.api.db.schemas.s_carritos_items import CarritoItemsCreate, CarritoItemsResponse
 from src.api.db.schemas.s_response import Mensaje
-from src.controllers.c_carritos import c_añadir_item_a_carrito, c_ver_items_de_carrito_por_usuario
+from src.controllers.c_carritos import c_añadir_item_a_carrito, c_ver_items_de_carrito_por_usuario, c_quitar_item_a_carrito
 from src.controllers.c_imagenes import subir_imagen
 from src.api.db.sesion import get_db
 from src.auth.auth import get_current_user
@@ -17,9 +17,17 @@ async def r_ver_items_de_carrito_por_usuario(usuario_id:int, db: Session = Depen
     array = c_ver_items_de_carrito_por_usuario(db, usuario_id)
     return array
 
-@gestionar_carritos.put("/put/carritos_items/{usuario_id}", response_model=Mensaje, name="Añadir un item a un carrito de un usuario")
+@gestionar_carritos.put("/put/carritos_items/añadir/{usuario_id}", response_model=Mensaje, name="Añadir un item a un carrito de un usuario")
 async def r_añadir_item_a_carrito(usuario_id:int, entrada: CarritoItemsCreate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
     if c_añadir_item_a_carrito(db, usuario_id, entrada):
+        respuesta = Mensaje(
+            detail="Carrito actualizado exitosamente",
+        )
+        return respuesta
+    
+@gestionar_carritos.put("/put/carritos_items/quitar/{usuario_id}", response_model=Mensaje, name="Quitar un item a un carrito de un usuario")
+async def r_quitar_item_a_carrito(usuario_id:int, entrada: CarritoItemsCreate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
+    if c_quitar_item_a_carrito(db, usuario_id, entrada):
         respuesta = Mensaje(
             detail="Carrito actualizado exitosamente",
         )
