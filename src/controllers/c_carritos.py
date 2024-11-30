@@ -55,15 +55,22 @@ def c_añadir_item_a_carrito(db, usuario_id:int, entrada:CarritoItemsCreate):
             db.add(datos2)
             db.commit()
         if carrito is not None:
-            datos = Carrito_ItemsModel(
-                carrito_id = carrito.id,
-                producto_id = entrada.producto_id,
-                cantidad = entrada.cantidad,
-            )
-            db.add(datos)
-            db.commit()
-            carrito.total += (entrada.cantidad * producto.precio)
-            db.commit()
+            validacion = db.query(Carrito_ItemsModel).filter(Carrito_ItemsModel.carrito_id==carrito.id, Carrito_ItemsModel.producto_id==entrada.producto_id).first()
+            if validacion is not None:
+                validacion.cantidad = validacion.cantidad + entrada.cantidad
+                db.commit()
+                carrito.total += (entrada.cantidad * producto.precio)
+                db.commit()
+            if validacion is None:
+                datos = Carrito_ItemsModel(
+                    carrito_id = carrito.id,
+                    producto_id = entrada.producto_id,
+                    cantidad = entrada.cantidad,
+                )
+                db.add(datos)
+                db.commit()
+                carrito.total += (entrada.cantidad * producto.precio)
+                db.commit()
         return True
     except Exception as e:
         raise HTTPException(
