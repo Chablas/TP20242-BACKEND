@@ -14,12 +14,12 @@ from fastapi import File, UploadFile
 gestionar_categorias = APIRouter()
 
 @gestionar_categorias.get("/get/categorias", response_model=List[CategoriaResponse], name="Obtener todas las categorias")
-async def r_obtener_categorias(db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
+async def r_obtener_categorias(db: Session = Depends(get_db)):
     array = c_obtener_todos_las_categorias(db)
     return array
 
 @gestionar_categorias.get("/get/categoria/{id}", response_model=CategoriaResponse, name="Obtener una categoria por su id")
-async def r_obtener_categoria_por_id(id:str, db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
+async def r_obtener_categoria_por_id(id:str, db: Session = Depends(get_db)):
     return c_obtener_categoria_por_id(db, id)
 
 @gestionar_categorias.post("/post/categoria", response_model=MensajeID, name="Crear una categoria")
