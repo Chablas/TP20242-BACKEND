@@ -23,7 +23,7 @@ async def r_obtener_categoria_por_id(id:str, db: Session = Depends(get_db)):
     return c_obtener_categoria_por_id(db, id)
 
 @gestionar_categorias.post("/post/categoria", response_model=MensajeID, name="Crear una categoria")
-async def r_crear_categoria(entrada: CategoriaCreate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
+async def r_crear_categoria(entrada: CategoriaCreate, db: Session = Depends(get_db), user:dict=Depends(get_current_user)):#
     respuesta_id = c_crear_categoria(db, entrada)
     respuesta = MensajeID(
         detail=respuesta_id,
