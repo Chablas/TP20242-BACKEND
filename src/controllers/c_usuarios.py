@@ -1,4 +1,5 @@
 from src.api.db.models.m_usuarios import Usuario as UsuarioModel
+from src.api.db.models.m_carritos import Carrito as CarritoModel
 from src.auth.auth import bcrypt_context
 from src.api.db.schemas.s_usuarios import UsuarioCreate, UsuarioSesion, UsuarioResponse
 from fastapi import HTTPException, status
@@ -44,6 +45,12 @@ def crear_usuario(db, entrada:UsuarioCreate):
         db.add(usuario)
         db.commit()
         db.refresh(usuario)
+        datos1 = CarritoModel(
+            usuario_id = usuario.id,
+            total = 0,
+        )
+        db.add(datos1)
+        db.commit()
         return True
     except Exception as e:
         raise HTTPException(

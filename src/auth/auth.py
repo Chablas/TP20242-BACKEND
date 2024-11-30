@@ -9,6 +9,7 @@ from typing import Annotated
 from sqlalchemy.orm import Session
 from src.api.db.sesion import get_db
 from src.api.db.schemas.s_token import Usuario
+import bcrypt
 
 SECRET_KEY = 'AS7FD6SGF7F69GH7FG9H8798F76G9F8DG6SF79H8S79H87FG9H8SGF798J798M7NVB979V87E9'
 ALGORITHM = 'HS256'
