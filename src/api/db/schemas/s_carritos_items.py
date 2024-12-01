@@ -29,3 +29,10 @@ class CarritoItemsResponse(BaseModel):
     cantidad:int
     class Config:
         orm_mode=True
+
+class CarritoTotalResponse(BaseModel):
+    id: int
+    usuario_id:int
+    total:float
+    class Config:
+        orm_mode=True

@@ -6,6 +6,14 @@ from src.api.db.schemas.s_carritos import CarritoCompleto, CarritoCreate, Carrit
 from src.api.db.schemas.s_carritos_items import CarritoItemsCompleto, CarritoItemsCreate, CarritoItemsUpdate, CarritoItemsResponse
 from fastapi import HTTPException, status
 
+def c_obtener_total_de_carrito_por_usuario_id(db, id:int):
+    try:
+        carrito = db.query(CarritoModel).filter(CarritoModel.usuario_id==id).first()
+        return carrito
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error interno del servidor")
+
 def c_ver_items_de_carrito_por_usuario(db, usuario_id:int):
     try:
         carrito = db.query(CarritoModel).filter(CarritoModel.usuario_id==usuario_id).first()
