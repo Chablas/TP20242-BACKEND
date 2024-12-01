@@ -13,12 +13,12 @@ from typing import List
 gestionar_carritos = APIRouter()
 
 @gestionar_carritos.get("/get/carritos_items/{usuario_id}", response_model=List[CarritoItemsResponse], name="Obtener los items de un carrito por id de usuario")
-async def r_ver_items_de_carrito_por_usuario(usuario_id:int, db: Session = Depends(get_db)):
+async def r_ver_items_de_carrito_por_usuario(usuario_id:int, db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
     array = c_ver_items_de_carrito_por_usuario(db, usuario_id)
     return array
 
 @gestionar_carritos.put("/put/carritos_items/añadir/{usuario_id}", response_model=Mensaje, name="Añadir un item a un carrito de un usuario")
-async def r_añadir_item_a_carrito(usuario_id:int, entrada: CarritoItemsCreate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
+async def r_añadir_item_a_carrito(usuario_id:int, entrada: CarritoItemsCreate, db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
     if c_añadir_item_a_carrito(db, usuario_id, entrada):
         respuesta = Mensaje(
             detail="Carrito actualizado exitosamente",
@@ -26,7 +26,7 @@ async def r_añadir_item_a_carrito(usuario_id:int, entrada: CarritoItemsCreate, 
         return respuesta
     
 @gestionar_carritos.put("/put/carritos_items/quitar/{usuario_id}", response_model=Mensaje, name="Quitar un item a un carrito de un usuario")
-async def r_quitar_item_a_carrito(usuario_id:int, entrada: CarritoItemsCreate, db: Session = Depends(get_db)):#, user:dict=Depends(get_current_user)):
+async def r_quitar_item_a_carrito(usuario_id:int, entrada: CarritoItemsCreate, db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
     if c_quitar_item_a_carrito(db, usuario_id, entrada):
         respuesta = Mensaje(
             detail="Carrito actualizado exitosamente",
