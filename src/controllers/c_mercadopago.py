@@ -3,24 +3,26 @@ from src.api.db.schemas.s_pedido import MercadoPagoCreate
 import mercadopago
 from dotenv import load_dotenv
 import os
+from typing import List
 
 load_dotenv()  # Cargar variables de entorno
 ACCESS_TOKEN_MERCADOPAGO = os.getenv("ACCESS_TOKEN_MERCADOPAGO")
 
-def c_crear_preferencia(db, entrada:MercadoPagoCreate):
+def c_crear_preferencia(db, entrada:List[MercadoPagoCreate]):
     try:
-        print("1")
         sdk = mercadopago.SDK(ACCESS_TOKEN_MERCADOPAGO)
-        print("2")
         request_options = mercadopago.config.RequestOptions()
-        print("3")
-        preference_data = {
-            "items": [{
-                "title": entrada.title,
-                "quantity": entrada.quantity,
-                "unit_price": entrada.price,
+        items = []
+        for item in entrada:
+            objeto = {
+                "title": item.title,
+                "quantity": item.quantity,
+                "unit_price": item.price,
                 "currency_id": "PEN",
-            }],
+            }
+            items.append(objeto)
+        preference_data = {
+            "items": items,
             "back_urls": {
                 "success": "https://compusave-frontend.onrender.com/",
                 "failure": "https://compusave-frontend.onrender.com/",
@@ -28,12 +30,7 @@ def c_crear_preferencia(db, entrada:MercadoPagoCreate):
             },
             "auto_return": "approved",
         }
-        print("4")
         preference_response = sdk.preference().create(preference_data)
-        print(preference_response)
-        print("5")
-        print(preference_response["response"]["id"])
-        print("6")
         return preference_response["response"]["id"]
     except Exception as e:
         raise HTTPException(

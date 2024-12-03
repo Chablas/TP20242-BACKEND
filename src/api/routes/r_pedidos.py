@@ -20,7 +20,7 @@ async def r_crear_pedido(usuario_id:int, db: Session = Depends(get_db), user:dic
         return respuesta
     
 @gestionar_pedidos.post("/post/crear_preferencia", response_model=Mensaje, name="Crear una preferencia para MercadoPago")
-async def r_crear_preferencia(entrada: MercadoPagoCreate, db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
+async def r_crear_preferencia(entrada: List[MercadoPagoCreate], db: Session = Depends(get_db), user:dict=Depends(get_current_user)):
     respuesta_id = c_crear_preferencia(db, entrada)
     respuesta = Mensaje(
         detail=respuesta_id,
