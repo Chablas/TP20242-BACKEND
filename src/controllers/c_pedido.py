@@ -11,10 +11,8 @@ import pytz
 
 LIMA_TZ = pytz.timezone("America/Lima")
 
-def c_crear_pedido(db, usuario_id:int, entrada:PedidoCreate):
+def c_crear_pedido(db, usuario_id:int):
     # Validaciones inicio
-    if entrada.total == False:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El campo total está vacío")
     validacion = db.query(UsuarioModel).filter(UsuarioModel.id==usuario_id).first()
     if validacion is None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El usuario no existe")

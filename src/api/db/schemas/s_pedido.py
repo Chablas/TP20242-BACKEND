@@ -18,3 +18,10 @@ class PedidoDetalleCreate(BaseModel):
     cantidad:int
     class Config:
         orm_mode=True
+
+class MercadoPagoCreate(BaseModel):
+    title:str
+    quantity:int
+    price:float
+    class Config:
+        orm_mode=True
