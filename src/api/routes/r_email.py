@@ -33,7 +33,6 @@ html = """
     <div class="container" style="width: 100%; max-width: 600px; margin: 30px auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
         <div class="header" style="text-align: center; margin-bottom: 20px;">
             <!-- Imagen de logo de la empresa -->
-            <img src="http://localhost:5173/src/assets/images/logo.jpg" alt="Logo Compusave" style="max-width: 150px; margin-bottom: 20px;">
             <h1 style="font-size: 24px; color: #9b4dca;">¡Gracias por confiar en Compusave!</h1>
         </div>
         <div class="message" style="font-size: 16px; line-height: 1.6;">
@@ -46,15 +45,14 @@ html = """
         <div class="footer" style="text-align: center; margin-top: 30px; font-size: 14px; color: #777;">
             <p>Gracias nuevamente por ser parte de <strong>Compusave</strong>.</p>
             <p>Atentamente, <br><strong>El equipo de Compusave</strong></p>
-            <p><a href="mailto:soporte@compusave.com" style="color: #9b4dca; text-decoration: none;">soporte@compusave.com</a></p>
             <!-- Botón para acceder al soporte -->
-            <a href="https://www.compusave.com/soporte" style="display: inline-block; padding: 10px 20px; background-color: #9b4dca; color: #fff; text-decoration: none; border-radius: 4px; margin-top: 20px;">Ir a Soporte</a>
+            <a href="https://compusave-frontend.onrender.com/" style="display: inline-block; padding: 10px 20px; background-color: #9b4dca; color: #fff; text-decoration: none; border-radius: 4px; margin-top: 20px;">Ir a Compusave</a>
         </div>
     </div>
 </body>
 """
 
-@gestionar_emails.post("/email")
+@gestionar_emails.post("/email/bienvenida")
 async def simple_send(email: EmailSchema) -> JSONResponse:
     message = MessageSchema(
         subject="Fastapi-Mail module",
